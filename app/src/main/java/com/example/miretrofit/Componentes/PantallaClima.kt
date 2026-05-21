@@ -1,5 +1,7 @@
 package com.example.miretrofit.Componentes
 
+import android.R.attr.text
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.miretrofit.API.NetworkResponse
 import com.example.miretrofit.miviewModel.ClimaViewModel
 
 @Composable
@@ -32,15 +35,25 @@ fun PantallaClima (viewModel: ClimaViewModel, modifier: Modifier){
           .padding(8.dp)
           , verticalAlignment = Alignment.CenterVertically
           , horizontalArrangement = Arrangement.SpaceEvenly
-      ){
-          OutlinedTextField(value = ciudad,
-              onValueChange = {ciudad= it}
-          , label= { Text("ciudad para el clima") })
-          IconButton(onClick = { viewModel.getData(ciudad)}) {
+      ) {
+          OutlinedTextField(
+              value = ciudad,
+              onValueChange = { ciudad = it }, label = { Text("ciudad para el clima") })
+          IconButton(onClick = { viewModel.getData(ciudad) }) {
 //              Icon(imageVector = Icon.Filled.Search, ContentDescription = "buscar")
-                Icon(imageVector = Icons.Filled.Search, contentDescription = "buscar")
+              Icon(imageVector = Icons.Filled.Search, contentDescription = "buscar")
           }
+      }
+        when(val result=resultado.value){
+              is NetworkResponse.Error->Text(text=result.mensaje)
+            NetworkResponse.loading -> Text(text="cargando contenido....")
+            is NetworkResponse.Success -> {
+                Text(text=result.data.toString())
+                Log.d("Respuesta", result.data.toString())
+            }
+          }
+
 
       }
     }
-    }
+
