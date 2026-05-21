@@ -61,6 +61,8 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-livedata:1.11.1")
     implementation("androidx.compose.material3:material3:1.4.0")
     implementation("androidx.compose.material:material-icons-core:1.6.8")
+    implementation("io.coil-kt.coil3:coil-compose:3.4.0")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.4.0")
 
 
 

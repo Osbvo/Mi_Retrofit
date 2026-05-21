@@ -23,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import com.example.miretrofit.API.NetworkResponse
 import com.example.miretrofit.miviewModel.ClimaViewModel
 
@@ -30,28 +31,36 @@ import com.example.miretrofit.miviewModel.ClimaViewModel
 fun PantallaClima (viewModel: ClimaViewModel, modifier: Modifier){
     var ciudad by remember { mutableStateOf("")}
     val resultado= viewModel.resultado
-    Column(modifier = Modifier.fillMaxSize()){
-      Row(modifier = Modifier.fillMaxWidth()
-          .padding(8.dp)
-          , verticalAlignment = Alignment.CenterVertically
-          , horizontalArrangement = Arrangement.SpaceEvenly
-      ) {
-          OutlinedTextField(
-              value = ciudad,
-              onValueChange = { ciudad = it }, label = { Text("ciudad para el clima") })
-          IconButton(onClick = { viewModel.getData(ciudad) }) {
+    Column(modifier = Modifier.fillMaxSize()) {
+        Row(
+            modifier = Modifier.fillMaxWidth()
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            OutlinedTextField(
+                value = ciudad,
+                onValueChange = { ciudad = it }, label = { Text("ciudad para el clima") })
+            IconButton(onClick = { viewModel.getData(ciudad) }) {
 //              Icon(imageVector = Icon.Filled.Search, ContentDescription = "buscar")
-              Icon(imageVector = Icons.Filled.Search, contentDescription = "buscar")
-          }
-      }
-        when(val result=resultado.value){
-              is NetworkResponse.Error->Text(text=result.mensaje)
-            NetworkResponse.loading -> Text(text="cargando contenido....")
-            is NetworkResponse.Success -> {
-                Text(text=result.data.toString())
-                Log.d("Respuesta", result.data.toString())
+                Icon(imageVector = Icons.Filled.Search, contentDescription = "buscar")
             }
-          }
+        }
+        when (val result = resultado.value) {
+            is NetworkResponse.Error -> Text(text = result.mensaje)
+            NetworkResponse.loading -> Text(text = "cargando contenido....")
+            is NetworkResponse.Success -> {
+                Text(text = result.data.toString())
+                AsyncImage(
+                    model = "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png",
+                    contentDescription = null,
+
+                    )
+                Log.d("respuesta", result.data.toString())
+            }
+
+            else -> {}
+        }
 
 
       }
